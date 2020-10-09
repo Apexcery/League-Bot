@@ -30,7 +30,7 @@ namespace League_Bot
                 .AddSingleton(_commands)
                 .BuildServiceProvider();
 
-            var token = @"NzY0MTQ2NTA5OTcyMjQyNDQy.X4CA5Q.3dC6q7HPGJOlOQr52YXeCy5w-2Q";
+            var token = @""; //Add bot token here.
 
             await RegisterCommandsAsync();
 
