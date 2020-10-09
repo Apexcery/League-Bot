@@ -69,13 +69,15 @@ namespace League_Bot
                 var result = await _commands.ExecuteAsync(context, argPos, _services);
                 if (!result.IsSuccess)
                 {
-                    var embed = new EmbedBuilder()
-                        .WithTitle("Usage")
-                        .AddField("Changelog", $"{prefix}changelog\nView the most recent changes to this bot.")
-                        .WithColor(Color.Blue)
-                        .Build();
+                    Console.WriteLine(result.ErrorReason);
 
-                    await context.Channel.SendMessageAsync("Unknown Command", false, embed);
+                    //var embed = new EmbedBuilder()
+                    //    .WithTitle("Usage")
+                    //    .AddField("Changelog", $"{prefix}changelog\nView the most recent changes to this bot.")
+                    //    .WithColor(Color.Blue)
+                    //    .Build();
+
+                    //await context.Channel.SendMessageAsync("Unknown Command", false, embed);
                 }
             }
         }
