@@ -44,7 +44,7 @@ namespace League_Bot.Commands
             if (topChampionImage != null)
             {
                 var topChampionDataDragonImageUrl =
-                    $"http://ddragon.leagueoflegends.com/cdn/{latestDataDragonVersion}/img/champion/{topChampionImage?.Full}";
+                    $"http://ddragon.leagueoflegends.com/cdn/{latestDataDragonVersion}/img/champion/{topChampionImage.Full}";
                 embed = embed.WithThumbnailUrl(topChampionDataDragonImageUrl);
             }
 
