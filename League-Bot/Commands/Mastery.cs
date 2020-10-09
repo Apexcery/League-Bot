@@ -54,7 +54,7 @@ namespace League_Bot.Commands
                 if (champion == null)
                     break;
 
-                embed = embed.AddField(champion.Name,$"{championMastery.ChampionPoints} Points");
+                embed = embed.AddField(champion.Name,$"{String.Format("{0:n0", championMastery.ChampionPoints)} Points");
             }
 
             await ReplyAsync("", false, embed.Build());
