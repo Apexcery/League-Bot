@@ -6,45 +6,47 @@ using System.Text;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
+using League_Bot.Models;
+using League_Bot.Services;
 using Newtonsoft.Json;
 using RiotSharp;
 using RiotSharp.Misc;
+using Champion = League_Bot.Services.Champion;
 
 namespace League_Bot.Commands
 {
     public class Mastery : ModuleBase<SocketCommandContext>
     {
-        private const string ApiKey = @""; //Add Riot API-Key here.
+        private static readonly string ApiKey = Environment.GetEnvironmentVariable("riot-api-key");
         private readonly RiotApi _api = RiotApi.GetDevelopmentInstance(ApiKey);
 
         [Command("mastery")]
-        public async Task CommandMastery(string summonerName)
+        public async Task CommandMastery(string region, string summonerName)
         {
-            var client = new HttpClient();
-            var dataDragonVersions =
-                JsonConvert.DeserializeObject<List<string>>(
-                    await (await client.GetAsync("https://ddragon.leagueoflegends.com/api/versions.json")).Content.ReadAsStringAsync());
+            Enum.TryParse(typeof(Region), region, true, out var regionEnum);
+            if (regionEnum == null)
+                throw new Exception("Region could not be parsed");
+            
+            var latestDataDragonVersion = await DataDragon.GetLatestVersion();
 
-            var latestDataDragonVersion = dataDragonVersions.First();
+            var summoner = await _api.Summoner.GetSummonerByNameAsync((Region) regionEnum, summonerName);
+            var top5Mastery = await Summoner.GetMasteries((Region) regionEnum, summoner);
 
-            var summoner = await _api.Summoner.GetSummonerByNameAsync(Region.Euw, summonerName);
-            var top5Mastery = (await _api.ChampionMastery.GetChampionMasteriesAsync(Region.Euw, summoner.Id))
-                .OrderByDescending(x => x.ChampionPoints)
-                .Take(5);
+            if (!top5Mastery.Any())
+            {
+                await ReplyAsync("No mastery details could be found.");
+                return;
+            }
 
-            var champions = (await _api.StaticData.Champions.GetAllAsync(latestDataDragonVersion)).Champions.Values
-                .Where(x => top5Mastery.Any(z => z.ChampionId == x.Id))
-                .ToList();
-
-            var topChampionImage = champions.FirstOrDefault(x => x.Id == top5Mastery.FirstOrDefault()?.ChampionId)?.Image;
+            var champions = await Champion.GetAllChampions(latestDataDragonVersion);
 
             var embed = new EmbedBuilder()
                 .WithTitle("Top 5 Champion Mastery's");
 
+            var topChampionImage = champions.FirstOrDefault(x => x.Id == top5Mastery.FirstOrDefault()?.ChampionId)?.Image;
             if (topChampionImage != null)
             {
-                var topChampionDataDragonImageUrl =
-                    $"http://ddragon.leagueoflegends.com/cdn/{latestDataDragonVersion}/img/champion/{topChampionImage.Full}";
+                var topChampionDataDragonImageUrl = Champion.GetImageUrl(latestDataDragonVersion, topChampionImage.Full);
                 embed = embed.WithThumbnailUrl(topChampionDataDragonImageUrl);
             }
 
