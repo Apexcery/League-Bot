@@ -9,7 +9,7 @@ namespace League_Bot.Models
 {
     public static class Summoner
     {
-        private static readonly string ApiKey = Environment.GetEnvironmentVariable("riot-apikey");
+        private static readonly string ApiKey = Environment.GetEnvironmentVariable("riot-api-key");
         private static readonly RiotApi Api = RiotApi.GetDevelopmentInstance(ApiKey);
 
         public static async Task<RiotSharp.Endpoints.SummonerEndpoint.Summoner> GetSummonerByName(Region region, string summonerName)
