@@ -16,7 +16,7 @@ namespace League_Bot.Commands
 
             var embed = new EmbedBuilder()
                 .WithTitle("Usage")
-                .AddField("Changelog", $"{prefix}changelog\nView the most recent changes to this bot.")
+                .AddField("Mastery", $"{prefix}mastery <region> <Summoner Name>\nView the top 5 mastery's for the specified summoner.")
                 .WithColor(Color.Blue)
                 .Build();
 
