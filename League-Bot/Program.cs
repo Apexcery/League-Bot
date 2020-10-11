@@ -30,7 +30,7 @@ namespace League_Bot
                 .AddSingleton(_commands)
                 .BuildServiceProvider();
 
-            var token = @""; //Add bot token here.
+            var token = Environment.GetEnvironmentVariable("token"); //Add bot token here.
 
             await RegisterCommandsAsync();
 
@@ -62,7 +62,7 @@ namespace League_Bot
 
             var argPos = 0;
 
-            var prefix = "!l ";
+            var prefix = Environment.GetEnvironmentVariable("prefix");
 
             if (message.HasStringPrefix(prefix, ref argPos))
             {

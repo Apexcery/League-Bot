@@ -12,7 +12,7 @@ namespace League_Bot.Commands
         [Command("help")]
         public async Task Help()
         {
-            var prefix = "!l ";
+            var prefix = Environment.GetEnvironmentVariable("prefix");
 
             var embed = new EmbedBuilder()
                 .WithTitle("Usage")
