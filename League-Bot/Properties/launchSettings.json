@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "League-Bot": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

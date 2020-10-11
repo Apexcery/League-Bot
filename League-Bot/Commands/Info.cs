@@ -12,11 +12,11 @@ namespace League_Bot.Commands
         [Command("help")]
         public async Task Help()
         {
-            var prefix = "!l ";
+            var prefix = Environment.GetEnvironmentVariable("prefix");
 
             var embed = new EmbedBuilder()
                 .WithTitle("Usage")
-                .AddField("Changelog", $"{prefix}changelog\nView the most recent changes to this bot.")
+                .AddField("Mastery", $"{prefix}mastery <region> <Summoner Name>\nView the top 5 mastery's for the specified summoner.")
                 .WithColor(Color.Blue)
                 .Build();
 
